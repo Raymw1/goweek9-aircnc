@@ -3,6 +3,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const path = require("path");
 
 class App {
   constructor() {
@@ -16,6 +17,10 @@ class App {
     this.express.use(morgan("dev"));
     this.express.use(cors());
     this.express.use(express.json());
+    this.express.use(
+      "/files",
+      express.static(path.resolve(__dirname, "..", "uploads"))
+    );
   }
 
   routes() {
