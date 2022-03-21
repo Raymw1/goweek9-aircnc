@@ -40,7 +40,7 @@ function SpotList({ tech, navigation }) {
           <View style={styles.listItem}>
             <Image
               source={{
-                uri: item.thumbnail_url.replace("localhost", "192.168.1.106"),
+                uri: item.thumbnail_url.replace("localhost", "192.168.100.106"),
               }}
               style={styles.thumbnail}
             />
