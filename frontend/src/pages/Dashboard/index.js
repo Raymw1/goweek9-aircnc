@@ -32,6 +32,16 @@ export default function Dashboard() {
     loadSpots();
   }, [navigate]);
 
+  async function handleAccept(id) {
+    await api.post(`/bookings/${id}/approvals`);
+    setRequests(requests.filter((request) => request._id !== id));
+  }
+
+  async function handleReject(id) {
+    await api.post(`/bookings/${id}/rejections`);
+    setRequests(requests.filter((request) => request._id !== id));
+  }
+
   return (
     <>
       <ul className="notifications">
@@ -39,10 +49,21 @@ export default function Dashboard() {
           <li key={request._id}>
             <p>
               <strong>{request.user.email}</strong> is requesting a booking at{" "}
-              <strong>{request.spot.company}</strong> at: {request.date}
+              <strong>{request.spot.company}</strong> at:{" "}
+              <strong>{request.date}</strong>
             </p>
-            <button>ACCEPT</button>
-            <button>REJECT</button>
+            <button
+              className="accept"
+              onClick={() => handleAccept(request._id)}
+            >
+              ACCEPT
+            </button>
+            <button
+              className="reject"
+              onClick={() => handleReject(request._id)}
+            >
+              REJECT
+            </button>
           </li>
         ))}
       </ul>

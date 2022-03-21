@@ -13,5 +13,13 @@ routes.post(
   controllers.SpotController.store
 );
 routes.post("/spots/:spot_id/bookings", controllers.BookingController.store);
+routes.post(
+  "/bookings/:booking_id/approvals",
+  controllers.ApprovalController.store
+);
+routes.post(
+  "/bookings/:booking_id/rejections",
+  controllers.RejectionController.store
+);
 
 module.exports = routes;
