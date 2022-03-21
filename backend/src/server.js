@@ -8,6 +8,8 @@ const path = require("path");
 class App {
   constructor() {
     this.express = express();
+    this.server = require("http").Server(this.express);
+    this.socket();
     this.middlewares();
     this.routes();
   }
@@ -26,6 +28,20 @@ class App {
   routes() {
     this.express.use(require("./routes"));
   }
+
+  socket() {
+    const connectedUsers = [];
+    const io = require("socket.io")(this.server, { cors: { origin: "*" } });
+    io.on("connection", (socket) => {
+      const { user_id } = socket.handshake.query;
+      connectedUsers[user_id] = socket.id;
+    });
+    this.express.use((req, res, next) => {
+      req.io = io;
+      req.connectedUsers = connectedUsers;
+      return next();
+    });
+  }
 }
 
-module.exports = new App().express;
+module.exports = new App().server;
